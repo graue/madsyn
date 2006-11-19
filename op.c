@@ -36,16 +36,6 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
-/*typedef struct
-{
-	int numinputs;
-	int numoutputs;
-	void (*run)(const frame_t *in, frame_t *out, void *state);
-	void *(*init)(void); // NULL if no state
-	const char *name;
-} opdef_t;
-*/
-
 opdef_t ops[] =
 {
 	{ 1, 1, op_sin, NULL, "sin" },
