@@ -14,7 +14,7 @@ $(EXENAME): $(OBJS)
 
 xm.o: xm.c err.h
 err.o: err.c
-op.o: op.c op.h defs.h
+op.o: op.c data.h
 
 clean:
 	rm -f *.o $(EXENAME)

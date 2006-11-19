@@ -2,8 +2,7 @@
 
 #include <stddef.h>
 #include <math.h>
-#include "defs.h"
-#include "op.h"
+#include "data.h"
 
 #define SIMPLE_FUNC(name)						\
 static void op_ ## name (const frame_t *in, frame_t *out, void *state)	\
