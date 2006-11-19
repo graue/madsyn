@@ -4,6 +4,7 @@ void printtree(tree_t *tree, FILE *fp);
 void destroy(treenode_t *node);
 void destroytree(tree_t *tree);
 tree_t *copytree(const tree_t *tree);
+void mutate(tree_t *tree);
 
 /* random numbers */
 int rnd(int n);
