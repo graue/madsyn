@@ -36,16 +36,18 @@ void destroy(treenode_t *node)
 	}
 }
 
+#define RANGE 32767.0f
+
 static void dumpsample(FILE *out, smp_t sample)
 {
 	int16_t isample;
-	u_int16_t uisample;
 
-	if (sample < -32768.0f) sample = -32768.0f;
-	else if (sample > 32767.0f) sample = 32767.0f;
+	sample *= RANGE;
+	if (sample < -RANGE) sample = -RANGE;
+	else if (sample > RANGE) sample = RANGE;
 	isample = (int16_t)sample;
-	uisample = htole16(*(u_int16_t *)&sample);
-	fwrite(&uisample, sizeof uisample, 1, out);
+	isample = htole16(isample);
+	fwrite(&isample, sizeof isample, 1, out);
 }
 
 void play(tree_t *tree, FILE *out, int numsamples, int samprate)
