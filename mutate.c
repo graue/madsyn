@@ -7,8 +7,8 @@
 #include "protos.h"
 
 #define PERSISTENCE 50
-#define LOW -2.0f
-#define HIGH 2.0f
+#define LOW -1000.0f
+#define HIGH 1000.0f
 
 static smp_t randomconstant(void)
 {
