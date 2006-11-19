@@ -72,6 +72,13 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
+static void op_split(const frame_t *in, frame_t *out, void *state)
+{
+	(void)state;
+	out[0][0] = out[1][0] = in[0][0];
+	out[0][1] = out[1][1] = in[0][1];
+}
+
 opdef_t ops[] =
 {
 	{ 1, 1, op_sin, NULL, "sin" },
@@ -86,4 +93,5 @@ opdef_t ops[] =
 	{ 2, 1, op_mod, NULL, "mod" },
 	{ 2, 1, op_div, NULL, "div" },
 	{ 2, 1, op_pow, NULL, "pow" },
+	{ 1, 2, op_split, NULL, "split" },
 };
