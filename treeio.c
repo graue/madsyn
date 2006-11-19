@@ -87,7 +87,7 @@ tree_t *readtree(FILE *fp)
 	return tree;
 }
 
-static void printnode(treenode_t *node, FILE *fp)
+static void printnode(const treenode_t *node, FILE *fp)
 {
 	int ix;
 	if (node->op == NULL)
@@ -108,7 +108,7 @@ static void printnode(treenode_t *node, FILE *fp)
 	}
 }
 
-void printtree(tree_t *tree, FILE *fp)
+void printtree(const tree_t *tree, FILE *fp)
 {
 	printnode(tree->top, fp);
 	putc('\n', fp);
