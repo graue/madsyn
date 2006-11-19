@@ -87,7 +87,7 @@ tree_t *readtree(FILE *fp)
 	return tree;
 }
 
-void printtree(treenode_t *node, FILE *fp)
+static void printnode(treenode_t *node, FILE *fp)
 {
 	int ix;
 	if (node->op == NULL)
@@ -101,9 +101,15 @@ void printtree(treenode_t *node, FILE *fp)
 	{
 		for (ix = 0; ix < node->op->numinputs; ix++)
 		{
-			printtree(node->inputs[ix], fp);
+			printnode(node->inputs[ix], fp);
 			putc(' ', fp);
 		}
 		fputs(node->op->name, fp);
 	}
+}
+
+void printtree(tree_t *tree, FILE *fp)
+{
+	printnode(tree->top, fp);
+	putc('\n', fp);
 }

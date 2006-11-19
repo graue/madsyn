@@ -18,7 +18,7 @@ int main(void)
 		errx(1, "I won't write junk onto your terminal.");
 
 	tree = readtree(stdin);
-	printtree(tree->top, stderr);
+	printtree(tree, stderr);
 	play(tree, stdout, LEN, SAMPRATE);
 	destroy(tree->top);
 	free(tree);
