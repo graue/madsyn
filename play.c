@@ -10,7 +10,10 @@ static void run(treenode_t *node, frame_t *dst)
 	int ix;
 
 	if (node->op == NULL)
-		*dst[0] = *dst[1] = node->istime ? currenttime : node->constant;
+	{
+		dst[0][0] = dst[0][1] =
+			node->istime ? currenttime : node->constant;
+	}
 	else
 	{
 		if (node->op->init != NULL && node->state == NULL)
