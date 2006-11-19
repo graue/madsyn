@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include "data.h"
 #include "xm.h"
 #include "protos.h"
@@ -11,6 +12,11 @@ static treenode_t *randomnode(treenode_t *start, int depth)
 		return start;
 
 	return randomnode(start->inputs[rnd(start->op->numinputs)], depth-1);
+}
+
+static treenode_t *randomleaf(treenode_t *start)
+{
+	return randomnode(start, INT_MAX);
 }
 
 /* Fix up the parent links under node, after a mutation fubars them. */
@@ -76,13 +82,37 @@ void mut_deletesubtree(treenode_t *node)
 	goner->constant = LOW + frnd()*(HIGH-LOW);
 }
 
+void mut_copysubtree(treenode_t *node)
+{
+	treenode_t *src, *dest, *destparent;
+	int destidx;
+
+	if (node->depth <= 0) return;
+
+	src = randomnode(node, rnd(node->depth));
+
+	dest = randomleaf(node);
+	destparent = dest->parent;
+	/* Find which of its parent's inputs dest is. */
+	for (destidx = 0; destidx < destparent->op->numinputs; destidx++)
+		if (destparent->inputs[destidx] == dest)
+			break;
+	if (destidx == destparent->op->numinputs)
+		return; /* shouldn't happen */
+
+	destroy(dest); /* bye-bye, you nerdy terminal */
+	destparent->inputs[destidx] = dest = copynode(src);
+	dest->parent = destparent;
+}
+
 /* END MUTATIONS (although they are listed again below */
 
 typedef void (*mutatefunc)(treenode_t *node);
 mutatefunc mutations[] =
 {
 	mut_swapsubtrees,
-	mut_deletesubtree
+	mut_deletesubtree,
+	mut_copysubtree
 };
 #define NUMMUTATIONS (sizeof mutations / sizeof mutations[0])
 

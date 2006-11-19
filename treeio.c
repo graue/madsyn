@@ -119,7 +119,7 @@ void printtree(const tree_t *tree, FILE *fp)
 	putc('\n', fp);
 }
 
-static treenode_t *copynode(const treenode_t *node)
+treenode_t *copynode(const treenode_t *node)
 {
 	int ix;
 	treenode_t *newnode = xm(sizeof *newnode, 1);
