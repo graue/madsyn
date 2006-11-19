@@ -86,3 +86,24 @@ tree_t *readtree(FILE *fp)
 	tree->top = top;
 	return tree;
 }
+
+void printtree(treenode_t *node, FILE *fp)
+{
+	int ix;
+	if (node->op == NULL)
+	{
+		if (node->istime)
+			fputs("time", fp);
+		else
+			fprintf(fp, "%f", node->constant);
+	}
+	else
+	{
+		for (ix = 0; ix < node->op->numinputs; ix++)
+		{
+			printtree(node->inputs[ix], fp);
+			putc(' ', fp);
+		}
+		fputs(node->op->name, fp);
+	}
+}
