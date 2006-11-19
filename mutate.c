@@ -165,7 +165,7 @@ void mut_addop(treenode_t *node)
 
 	addspot = node->depth > 0 ? randomnode(node, rnd(node->depth)) : node;
 	newnode = xm(sizeof *newnode, 1);
-	memcpy(newnode, addspot, sizeof newnode);
+	memcpy(newnode, addspot, sizeof *newnode);
 	newnode->parent = addspot;
 
 	addspot->op = &ops[randop()];
