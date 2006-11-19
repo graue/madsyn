@@ -104,12 +104,12 @@ void mut_swapsubtrees(treenode_t *node)
 		two = randomnode(node, rnd(node->depth));
 
 		/*
-		 * Note that we make sure the two nodes swapped
-		 * are at the same depth, so one can't be a
-		 * subtree of the other (that would be pretty
-		 * bad):
+		 * Note that we make sure neither of the nodes
+		 * swapped is the ancestor of the other, as
+		 * then we'd end up creating a loop.
 		 */
-	} while (tries-- > 0 && (one == two || one->depth != two->depth));
+	} while (tries-- > 0 && (one == two || hasancestor(one, two)
+		|| hasancestor(two, one)));
 	if (tries == 0) return; /* didn't work out */
 
 	memcpy(&extra, one, sizeof extra);
