@@ -1,0 +1,44 @@
+This should have plugins that are sort of like functions
+with memory. Although some would not need memory. Sort of
+function-object hybrid things. Examples:
+
+sin: 1 input, 1 output, no state
+cos: 1 input, 1 output, no state
++: 2 inputs, 1 output, no state
+-: 2 inputs, 1 output, no state
+%: 2 inputs, 1 output, no state
+/: 2 inputs, 1 output, no state (division by 0 = 0)
+*: 2 inputs, 1 output, no state
+log: 1 input, 1 output, no state
+pow: 2 inputs, 1 output, no state (if x<0 and y not int, then 0 or smth?)
+sqrt, abs, sqr: as you'd expect (sqrt/sqr could maintain sign)
+deriv: 1 input, 1 output, discrete differentiator with state
+int: 1 input, 1 output, discrete integrator with state
+delay: 2 inputs, 1 output--
+	This delay line would work by maintaining an
+	arbitrary-length array of future samples. Add x to
+	the sample y milliseconds [or other units] in the
+	future.
+wave: 1 input, 1 output--
+	Play sample x from the wavetable (looping around and
+	linearly interpolating). For multiple waves, each of
+	these function-objects could choose a random wave
+	when first created.
+pan: 2 inputs, 1 output, pans x according to y, no state
+split: 1 input, 2 outputs, copies input twice, no state
+swap: 2 inputs, 2 outputs, swaps x and y, no state
+
+Whenever the genetic mutation makes a choice, like which
+mutation to do or what function-object to use, it could
+record that choice, and for the mutation you select as best,
+add (num mutations-1) points in favor of each choice made
+there, and for each mutation you reject, subtract one point
+from each choice made there. That way if any of the
+functions I've decided to use above turn out to suck, it
+will be self-correcting (the probability of each choice
+would depend on the number of points it has, after adding
+enough to give the least attractive choice 1 point [so if
+three choices are scored -3, 1, 10, then make it 1, 5, 14
+before choosing]).
+
+This way even the methods of mutation would evolve.
