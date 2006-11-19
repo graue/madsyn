@@ -163,7 +163,7 @@ void mut_copysubtree(treenode_t *node)
 	} while (tries-- > 0 && hasancestor(dest, src));
 	if (tries == 0) return;
 	destparent = dest->parent;
-	/* Find which of its parent's inputs dest is. */
+	/* Find which of its parents' inputs dest is. */
 	for (destidx = 0; destidx < destparent->op->numinputs; destidx++)
 		if (destparent->inputs[destidx] == dest)
 			break;
