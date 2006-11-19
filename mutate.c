@@ -28,6 +28,8 @@ static void fixupparents(treenode_t *node)
 /* BEGIN MUTATIONS */
 
 #define PERSISTENCE 50
+#define LOW -2.0f
+#define HIGH 2.0f
 
 void mut_swapsubtrees(treenode_t *node)
 {
@@ -57,12 +59,30 @@ void mut_swapsubtrees(treenode_t *node)
 	fixupparents(node);
 }
 
+/* Clobber a subtree, replacing it with a terminal. */
+void mut_deletesubtree(treenode_t *node)
+{
+	treenode_t *goner;
+	int ix;
+
+	goner = randomnode(node, rnd(node->depth));
+	if (goner->op != NULL)
+	{
+		for (ix = 0; ix < goner->op->numinputs; ix++)
+			destroy(goner->inputs[ix]);
+		goner->op = NULL;
+	}
+	goner->istime = rnd(2);
+	goner->constant = LOW + frnd()*(HIGH-LOW);
+}
+
 /* END MUTATIONS (although they are listed again below */
 
 typedef void (*mutatefunc)(treenode_t *node);
 mutatefunc mutations[] =
 {
-	mut_swapsubtrees
+	mut_swapsubtrees,
+	mut_deletesubtree
 };
 #define NUMMUTATIONS (sizeof mutations / sizeof mutations[0])
 
