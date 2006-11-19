@@ -41,6 +41,12 @@ void destroy(treenode_t *node)
 	free(node);
 }
 
+void destroytree(tree_t *tree)
+{
+	destroy(tree->top);
+	free(tree);
+}
+
 #define RANGE 32767.0f
 
 static void dumpsample(FILE *out, smp_t sample)
