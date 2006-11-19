@@ -45,6 +45,7 @@ tree_t *readtree(FILE *fp)
 		top->istime = 0;
 		top->constant = 0.0f;
 		top->depth = 0;
+		top->parent = NULL;
 
 		if (isdigit(txt[0]))
 		{
@@ -74,6 +75,7 @@ tree_t *readtree(FILE *fp)
 				top->inputs[ix] = nodes[nnodes-1];
 				if (top->inputs[ix]->depth >= top->depth)
 					top->depth = top->inputs[ix]->depth+1;
+				top->inputs[ix]->parent = top;
 			}
 		}
 
@@ -123,7 +125,10 @@ static treenode_t *copynode(const treenode_t *node)
 	treenode_t *newnode = xm(sizeof *newnode, 1);
 	memcpy(newnode, node, sizeof *newnode);
 	for (ix = 0; ix < newnode->op->numinputs; ix++)
+	{
 		newnode->inputs[ix] = copynode(newnode->inputs[ix]);
+		newnode->inputs[ix]->parent = newnode;
+	}
 	newnode->state = NULL;
 	return newnode;
 }

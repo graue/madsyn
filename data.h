@@ -20,6 +20,7 @@ typedef struct treenode
 	int istime; /* if op == NULL, use time value here */
 	smp_t constant; /* if op == NULL && !istime, constant value */
 	struct treenode *inputs[MAXINPUTS]; /* if op != NULL */
+	struct treenode *parent; /* NULL if top */
 	void *state; /* if op != NULL && op->init != NULL */
 	int depth; /* used in mutation */
 } treenode_t;
