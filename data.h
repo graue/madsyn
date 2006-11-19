@@ -10,6 +10,7 @@ typedef struct
 	int numinputs;
 	runptr run;
 	void *(*init)(void); /* NULL if no state */
+	void (*destroy)(void *state); /* NULL if no state */
 	const char *name;
 } opdef_t;
 

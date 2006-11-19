@@ -64,15 +64,15 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 
 opdef_t ops[] =
 {
-	{ 1, op_sin, NULL, "sin" },
-	{ 1, op_cos, NULL, "cos" },
-	{ 1, op_log, NULL, "log" },
-	{ 1, op_fabs, NULL, "abs" },
-	{ 2, op_pan, NULL, "pan" },
-	{ 2, op_add, NULL, "+" },
-	{ 2, op_sub, NULL, "-" },
-	{ 2, op_mul, NULL, "*" },
-	{ 2, op_mod, NULL, "%" },
-	{ 2, op_div, NULL, "/" },
-	{ 2, op_pow, NULL, "^" },
+	{ 1, op_sin, NULL, NULL, "sin" },
+	{ 1, op_cos, NULL, NULL, "cos" },
+	{ 1, op_log, NULL, NULL, "log" },
+	{ 1, op_fabs, NULL, NULL, "abs" },
+	{ 2, op_pan, NULL, NULL, "pan" },
+	{ 2, op_add, NULL, NULL, "+" },
+	{ 2, op_sub, NULL, NULL, "-" },
+	{ 2, op_mul, NULL, NULL, "*" },
+	{ 2, op_mod, NULL, NULL, "%" },
+	{ 2, op_div, NULL, NULL, "/" },
+	{ 2, op_pow, NULL, NULL, "^" },
 };
