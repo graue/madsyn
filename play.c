@@ -13,9 +13,11 @@ static void run(treenode_t *node, frame_t *dst)
 		*dst[0] = *dst[1] = node->istime ? currenttime : node->constant;
 	else
 	{
+		if (node->op->init != NULL && node->state == NULL)
+			node->state = node->op->init();
 		for (ix = 0; ix < node->op->numinputs; ix++)
 			run(node->inputs[ix], &inputs[ix]);
-		node->op->run((const frame_t *)&inputs[0], dst, NULL);
+		node->op->run((const frame_t *)&inputs[0], dst, node->state);
 	}
 }
 

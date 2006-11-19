@@ -19,6 +19,7 @@ typedef struct treenode
 	int istime; /* if op == NULL, use time value here */
 	smp_t constant; /* if op == NULL && !istime, constant value */
 	struct treenode *inputs[MAXINPUTS]; /* if op != NULL */
+	void *state; /* if op != NULL && op->init != NULL */
 } treenode_t;
 
 typedef struct
