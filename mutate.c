@@ -71,7 +71,9 @@ void mut_deletesubtree(treenode_t *node)
 	treenode_t *goner;
 	int ix;
 
-	goner = randomnode(node, rnd(node->depth));
+	if (node->depth > 0)
+		goner = randomnode(node, rnd(node->depth));
+	else goner = node;
 	if (goner->op != NULL)
 	{
 		for (ix = 0; ix < goner->op->numinputs; ix++)
