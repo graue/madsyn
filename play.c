@@ -35,8 +35,23 @@ void destroy(treenode_t *node)
 			node->op->destroy(node->state);
 			node->state = NULL;
 		}
+#ifdef DEBUG
+		fprintf(stderr, "node %p op %d (%d inputs): deleting ",
+			node, (int)(node->op-ops), node->op->numinputs);
+#endif
 		for (ix = 0; ix < node->op->numinputs; ix++)
+		{
+#ifdef DEBUG
+			fprintf(stderr, "%d (%p) [[", ix, node->inputs[ix]);
+#endif
 			destroy(node->inputs[ix]);
+#ifdef DEBUG
+			fprintf(stderr, "]] ");
+#endif
+		}
+#ifdef DEBUG
+		putc('\n', stderr);
+#endif
 	}
 	free(node);
 }

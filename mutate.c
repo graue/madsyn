@@ -198,5 +198,9 @@ mutatefunc mutations[] =
 
 void mutate(tree_t *tree)
 {
-	mutations[rnd(NUMMUTATIONS)](tree->top);
+	int method = rnd(NUMMUTATIONS);
+#ifdef DEBUG
+	fprintf(stderr, "using method %d\n", method);
+#endif
+	mutations[method](tree->top);
 }

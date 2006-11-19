@@ -3,7 +3,7 @@
 EXENAME = madsyn
 INSTALLDIR = $(HOME)/bin/
 
-CFLAGS = -W -Wall -Werror -O2 -ggdb
+CFLAGS = -W -Wall -Werror -O2 -ggdb -DDEBUG
 LDFLAGS = -lm
 OBJS = main.o mutate.o treeio.o play.o op.o random.o xm.o err.o
 
