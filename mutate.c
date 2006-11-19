@@ -79,6 +79,16 @@ static void fixupdepths(treenode_t *node)
 		fixupdepths(node->parent);
 }
 
+/* Tells if low has ancestor of high. */
+static int hasancestor(const treenode_t *low, const treenode_t *high)
+{
+	if (low->parent == NULL)
+		return 0;
+	if (low->parent == high)
+		return 1;
+	return hasancestor(low->parent, high);
+}
+
 /* BEGIN MUTATIONS */
 
 void mut_swapsubtrees(treenode_t *node)
@@ -135,12 +145,16 @@ void mut_copysubtree(treenode_t *node)
 {
 	treenode_t *src, *dest, *destparent;
 	int destidx;
+	int tries = PERSISTENCE;
 
 	if (node->depth <= 0) return;
 
-	src = randomnode(node, rnd(node->depth));
-
-	dest = randomleaf(node);
+	do
+	{
+		src = randomnode(node, rnd(node->depth));
+		dest = randomleaf(node); /* can't be top, due to depth check */
+	} while (tries-- > 0 && hasancestor(dest, src));
+	if (tries == 0) return;
 	destparent = dest->parent;
 	/* Find which of its parent's inputs dest is. */
 	for (destidx = 0; destidx < destparent->op->numinputs; destidx++)
