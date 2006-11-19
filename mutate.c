@@ -64,6 +64,21 @@ static void fixupparents(treenode_t *node)
 	}
 }
 
+/* Propagate correct depth information upwards from a leaf. */
+static void fixupdepths(treenode_t *node)
+{
+	int ix;
+
+	node->depth = 0;
+	if (node->op != NULL)
+		for (ix = 0; ix < node->op->numinputs; ix++)
+			if (node->inputs[ix]->depth >= node->depth)
+				node->depth = node->inputs[ix]->depth+1;
+
+	if (node->parent != NULL)
+		fixupdepths(node->parent);
+}
+
 /* BEGIN MUTATIONS */
 
 void mut_swapsubtrees(treenode_t *node)
@@ -92,6 +107,8 @@ void mut_swapsubtrees(treenode_t *node)
 	memcpy(two, &extra, sizeof *two);
 
 	fixupparents(node);
+
+	/* Note: Depths remain correct after this operation. I think. */
 }
 
 /* Clobber a subtree, replacing it with a terminal. */
@@ -111,6 +128,7 @@ void mut_deletesubtree(treenode_t *node)
 	}
 	goner->istime = rnd(2);
 	goner->constant = randomconstant();
+	fixupdepths(goner);
 }
 
 void mut_copysubtree(treenode_t *node)
@@ -134,6 +152,7 @@ void mut_copysubtree(treenode_t *node)
 	destroy(dest); /* bye-bye, you nerdy terminal */
 	destparent->inputs[destidx] = dest = copynode(src);
 	dest->parent = destparent;
+	fixupdepths(dest);
 }
 
 /* Slip a new op in the tree (not necessarily at a leaf). */
