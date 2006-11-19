@@ -150,7 +150,7 @@ void mut_deletesubtree(treenode_t *node)
 
 void mut_copysubtree(treenode_t *node)
 {
-	treenode_t *src, *dest, *destparent;
+	treenode_t *src, *dest, *destparent, *tmp;
 	int destidx;
 	int tries = PERSISTENCE;
 
@@ -170,8 +170,19 @@ void mut_copysubtree(treenode_t *node)
 	if (destidx == destparent->op->numinputs)
 		return; /* shouldn't happen */
 
+	/*
+	 * XXX
+	 * Before, when I didn't have "tmp" and I was doing the
+	 * copynode() after the destroy(), copynode() would get
+	 * some junked-up values and eat memory and crash.
+	 * This scheme of using "tmp" fixed the problem, but I
+	 * don't know why. Must investigate.
+	 * Example that would often fail when using this mutation:
+	 *     67.641 time %
+	 */
+	tmp = copynode(src);
 	destroy(dest); /* bye-bye, you nerdy terminal */
-	destparent->inputs[destidx] = dest = copynode(src);
+	destparent->inputs[destidx] = dest = tmp;
 	dest->parent = destparent;
 	fixupdepths(dest);
 }
