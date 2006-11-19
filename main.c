@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
 	int numsamples = MS_TO_SAMPLES(DEF_LEN);
 	int nummutations = DEF_MUTATIONS;
 
+	SET_BINARY_MODE(1); /* set stdout in binary mode for windows */
+
 	while ((ch = getopt(argc, argv, "l:m:")) != -1)
 	{
 		if (ch == 'l') /* length in ms */
