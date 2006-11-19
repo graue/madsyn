@@ -47,7 +47,8 @@ tree_t *readtree(FILE *fp)
 		top->depth = 0;
 		top->parent = NULL;
 
-		if (isdigit(txt[0]))
+		if (isdigit(txt[0]) || ((txt[0] == '-' || txt[0] == '+')
+			&& txt[1] != '\0'))
 		{
 			top->istime = 0;
 			top->constant = strtod(txt, NULL);
