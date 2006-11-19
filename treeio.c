@@ -124,10 +124,13 @@ treenode_t *copynode(const treenode_t *node)
 	int ix;
 	treenode_t *newnode = xm(sizeof *newnode, 1);
 	memcpy(newnode, node, sizeof *newnode);
-	for (ix = 0; ix < newnode->op->numinputs; ix++)
+	if (newnode->op != NULL)
 	{
-		newnode->inputs[ix] = copynode(newnode->inputs[ix]);
-		newnode->inputs[ix]->parent = newnode;
+		for (ix = 0; ix < newnode->op->numinputs; ix++)
+		{
+			newnode->inputs[ix] = copynode(newnode->inputs[ix]);
+			newnode->inputs[ix]->parent = newnode;
+		}
 	}
 	newnode->state = NULL;
 	return newnode;
