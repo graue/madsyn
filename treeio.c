@@ -44,6 +44,7 @@ tree_t *readtree(FILE *fp)
 		top->op = NULL;
 		top->istime = 0;
 		top->constant = 0.0f;
+		top->depth = 0;
 
 		if (isdigit(txt[0]))
 		{
@@ -71,6 +72,8 @@ tree_t *readtree(FILE *fp)
 				ix--, nnodes--)
 			{
 				top->inputs[ix] = nodes[nnodes-1];
+				if (top->inputs[ix]->depth >= top->depth)
+					top->depth = top->inputs[ix]->depth+1;
 			}
 		}
 
