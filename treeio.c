@@ -113,3 +113,21 @@ void printtree(const tree_t *tree, FILE *fp)
 	printnode(tree->top, fp);
 	putc('\n', fp);
 }
+
+static treenode_t *copynode(const treenode_t *node)
+{
+	int ix;
+	treenode_t *newnode = xm(sizeof *newnode, 1);
+	memcpy(newnode, node, sizeof *newnode);
+	for (ix = 0; ix < newnode->op->numinputs; ix++)
+		newnode->inputs[ix] = copynode(newnode->inputs[ix]);
+	newnode->state = NULL;
+	return newnode;
+}
+
+tree_t *copytree(const tree_t *tree)
+{
+	tree_t *newtree = xm(sizeof *newtree, 1);
+	newtree->top = copynode(tree->top);
+	return newtree;
+}
