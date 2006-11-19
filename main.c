@@ -28,8 +28,8 @@ int main(void)
 	{
 		mutant = copytree(tree);
 		mutate(mutant);
-		printtree(tree, stderr);
-		play(tree, stdout, LEN, SAMPRATE);
+		printtree(mutant, stderr);
+		play(mutant, stdout, LEN, SAMPRATE);
 		destroytree(mutant);
 	}
 
