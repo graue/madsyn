@@ -3,7 +3,7 @@
 typedef struct
 {
 	int numinputs;
-	frame_t (*run)(const frame_t *inputs, void *state);
+	void (*run)(const frame_t *in, frame_t *out, void *state);
 	void *(*init)(void); /* NULL if no state */
 	const char *name;
 } opdef_t;
