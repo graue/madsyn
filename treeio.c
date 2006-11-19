@@ -87,6 +87,9 @@ tree_t *readtree(FILE *fp)
 
 	if (top == NULL)
 		errx(1, "empty program");
+	if (nnodes > 1)
+		errx(1, "unfinished program: ends with nonempty stack");
+	free(nodes);
 
 	tree = xm(sizeof *tree, 1);
 	tree->top = top;
