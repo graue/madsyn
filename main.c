@@ -8,11 +8,14 @@
 #include "protos.h"
 
 #define SAMPRATE 44100
-#define LEN (20*SAMPRATE)
+#define LEN (8*SAMPRATE)
+#define MUTATIONS 3
 
 int main(void)
 {
 	tree_t *tree;
+	tree_t *mutant;
+	int ix;
 
 	if (isatty(STDOUT_FILENO))
 		errx(1, "I won't write junk onto your terminal.");
@@ -20,7 +23,16 @@ int main(void)
 	tree = readtree(stdin);
 	printtree(tree, stderr);
 	play(tree, stdout, LEN, SAMPRATE);
-	destroy(tree->top);
-	free(tree);
+
+	for (ix = 0; ix < MUTATIONS; ix++)
+	{
+		mutant = copytree(tree);
+		mutate(mutant);
+		printtree(tree, stderr);
+		play(tree, stdout, LEN, SAMPRATE);
+		destroytree(mutant);
+	}
+
+	destroytree(tree);
 	return 0;
 }
