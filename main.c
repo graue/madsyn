@@ -8,7 +8,7 @@
 #include "protos.h"
 
 #define SAMPRATE 44100
-#define LEN (8*SAMPRATE)
+#define LEN (5*SAMPRATE)
 #define MUTATIONS 3
 
 int main(void)
