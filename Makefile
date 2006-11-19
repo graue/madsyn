@@ -5,7 +5,7 @@ INSTALLDIR = $(HOME)/bin/
 
 CFLAGS = -W -Wall -Werror -O2 -ggdb
 LDFLAGS = -lm
-OBJS = main.o treeio.o play.o op.o xm.o err.o
+OBJS = main.o treeio.o play.o op.o random.o xm.o err.o
 
 all: $(EXENAME)
 
@@ -14,6 +14,7 @@ $(EXENAME): $(OBJS)
 
 xm.o: xm.c err.h
 err.o: err.c
+random.o: random.c
 op.o: op.c data.h
 play.o: play.c types.h data.h
 treeio.o: treeio.c data.h xm.h err.h

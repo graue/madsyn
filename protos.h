@@ -3,3 +3,7 @@ tree_t *readtree(FILE *fp);
 void printtree(tree_t *tree, FILE *fp);
 void destroy(treenode_t *node);
 tree_t *copytree(const tree_t *tree);
+
+/* random numbers */
+int rnd(int n);
+double frnd(void); /* from 0.0f to 1.0f */
