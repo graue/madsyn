@@ -12,3 +12,16 @@ typedef struct
 	void *(*init)(void); /* NULL if no state */
 	const char *name;
 } opdef_t;
+
+typedef struct treenode
+{
+	opdef_t *op; /* if NULL then a terminal */
+	int istime; /* if op == NULL, use time value here */
+	smp_t constant; /* if op == NULL && !istime, constant value */
+	struct treenode *inputs[MAXINPUTS]; /* if op != NULL */
+} treenode_t;
+
+typedef struct
+{
+	treenode_t *top;
+} tree_t;
