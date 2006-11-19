@@ -128,7 +128,14 @@ void mut_deletesubtree(treenode_t *node)
 	int ix;
 
 	if (node->depth > 0)
-		goner = randomnode(node, rnd(node->depth));
+	{
+		double depth;
+		/* Try to pick a node further down. */
+		depth = frnd();
+		depth *= frnd();
+		depth = node->depth - (depth*node->depth);
+		goner = randomnode(node, (int)depth);
+	}
 	else goner = node;
 	if (goner->op != NULL)
 	{
@@ -136,7 +143,7 @@ void mut_deletesubtree(treenode_t *node)
 			destroy(goner->inputs[ix]);
 		goner->op = NULL;
 	}
-	goner->istime = rnd(2);
+	goner->istime = rnd(3) ? 0 : 1;
 	goner->constant = randomconstant();
 	fixupdepths(goner);
 }
