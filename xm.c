@@ -2,6 +2,11 @@
 #include <limits.h>
 #include "err.h"
 
+/* MinGW (for example) appears to lack SIZE_T_MAX. */
+#ifndef SIZE_T_MAX
+#define SIZE_T_MAX ULONG_MAX
+#endif
+
 /*
  * The usual xmalloc and xrealloc type routines, for allocating memory
  * and bombing out if it fails.
