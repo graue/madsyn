@@ -6,6 +6,27 @@
 #include "xm.h"
 #include "protos.h"
 
+#define PERSISTENCE 50
+#define LOW -2.0f
+#define HIGH 2.0f
+
+static smp_t randomconstant(void)
+{
+	return LOW + frnd()*(HIGH-LOW);
+}
+
+/* Return a random op number. XXX a little bit of a hack. */
+static int randop(void)
+{
+	static int count = -1;
+
+	if (count == -1)
+		for (count = 0; ops[count].numinputs > 0; count++)
+			;
+
+	return rnd(count);
+}
+
 static treenode_t *randomnode(treenode_t *start, int depth)
 {
 	if (depth <= 0 || start->op == NULL)
@@ -17,6 +38,18 @@ static treenode_t *randomnode(treenode_t *start, int depth)
 static treenode_t *randomleaf(treenode_t *start)
 {
 	return randomnode(start, INT_MAX);
+}
+
+static treenode_t *newrandomizedleaf(void)
+{
+	treenode_t *node;
+	node = xm(sizeof *node, 1);
+	node->op = NULL;
+	node->istime = rnd(3) ? 0 : 1;
+	node->constant = randomconstant();
+	node->state = NULL;
+	node->parent = NULL;
+	return node;
 }
 
 /* Fix up the parent links under node, after a mutation fubars them. */
@@ -32,10 +65,6 @@ static void fixupparents(treenode_t *node)
 }
 
 /* BEGIN MUTATIONS */
-
-#define PERSISTENCE 50
-#define LOW -2.0f
-#define HIGH 2.0f
 
 void mut_swapsubtrees(treenode_t *node)
 {
@@ -81,7 +110,7 @@ void mut_deletesubtree(treenode_t *node)
 		goner->op = NULL;
 	}
 	goner->istime = rnd(2);
-	goner->constant = LOW + frnd()*(HIGH-LOW);
+	goner->constant = randomconstant();
 }
 
 void mut_copysubtree(treenode_t *node)
@@ -107,6 +136,35 @@ void mut_copysubtree(treenode_t *node)
 	dest->parent = destparent;
 }
 
+/* Slip a new op in the tree (not necessarily at a leaf). */
+void mut_addop(treenode_t *node)
+{
+	treenode_t *addspot;
+	treenode_t *newnode;
+	int ix;
+	int inputidx;
+
+	addspot = node->depth > 0 ? randomnode(node, rnd(node->depth)) : node;
+	newnode = xm(sizeof *newnode, 1);
+	memcpy(newnode, addspot, sizeof newnode);
+	newnode->parent = addspot;
+
+	addspot->op = &ops[randop()];
+	addspot->state = NULL;
+	inputidx = rnd(addspot->op->numinputs);
+	for (ix = 0; ix < addspot->op->numinputs; ix++)
+	{
+		if (ix == inputidx)
+			addspot->inputs[ix] = newnode;
+		else
+		{
+			addspot->inputs[ix] = newrandomizedleaf();
+			addspot->inputs[ix]->parent = addspot;
+		}
+	}
+	addspot->depth++;
+}
+
 /* END MUTATIONS (although they are listed again below */
 
 typedef void (*mutatefunc)(treenode_t *node);
@@ -114,7 +172,8 @@ mutatefunc mutations[] =
 {
 	mut_swapsubtrees,
 	mut_deletesubtree,
-	mut_copysubtree
+	mut_copysubtree,
+	mut_addop
 };
 #define NUMMUTATIONS (sizeof mutations / sizeof mutations[0])
 
