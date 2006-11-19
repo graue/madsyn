@@ -53,15 +53,6 @@ OPER_FUNC2(mod, fmod)
 OPER_FUNC2(div, mydiv)
 OPER_FUNC2(pow, mypow)
 
-static void op_swap(const frame_t *in, frame_t *out, void *state)
-{
-	(void)state;
-	out[0][0] = in[1][0];
-	out[0][1] = in[1][1];
-	out[1][0] = in[0][0];
-	out[1][1] = in[0][1];
-}
-
 static void op_pan(const frame_t *in, frame_t *out, void *state)
 {
 	smp_t angle;
@@ -71,26 +62,17 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
-static void op_split(const frame_t *in, frame_t *out, void *state)
-{
-	(void)state;
-	out[0][0] = out[1][0] = in[0][0];
-	out[0][1] = out[1][1] = in[0][1];
-}
-
 opdef_t ops[] =
 {
-	{ 1, 1, op_sin, NULL, "sin" },
-	{ 1, 1, op_cos, NULL, "cos" },
-	{ 1, 1, op_log, NULL, "log" },
-	{ 1, 1, op_fabs, NULL, "abs" },
-	{ 2, 2, op_swap, NULL, "swap" },
-	{ 2, 1, op_pan, NULL, "pan" },
-	{ 2, 1, op_add, NULL, "+" },
-	{ 2, 1, op_sub, NULL, "-" },
-	{ 2, 1, op_mul, NULL, "*" },
-	{ 2, 1, op_mod, NULL, "%" },
-	{ 2, 1, op_div, NULL, "/" },
-	{ 2, 1, op_pow, NULL, "^" },
-	{ 1, 2, op_split, NULL, "split" },
+	{ 1, op_sin, NULL, "sin" },
+	{ 1, op_cos, NULL, "cos" },
+	{ 1, op_log, NULL, "log" },
+	{ 1, op_fabs, NULL, "abs" },
+	{ 2, op_pan, NULL, "pan" },
+	{ 2, op_add, NULL, "+" },
+	{ 2, op_sub, NULL, "-" },
+	{ 2, op_mul, NULL, "*" },
+	{ 2, op_mod, NULL, "%" },
+	{ 2, op_div, NULL, "/" },
+	{ 2, op_pow, NULL, "^" },
 };
