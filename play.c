@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "types.h"
 #include "data.h"
 
@@ -37,6 +38,7 @@ void destroy(treenode_t *node)
 		for (ix = 0; ix < node->op->numinputs; ix++)
 			destroy(node->inputs[ix]);
 	}
+	free(node);
 }
 
 #define RANGE 32767.0f
