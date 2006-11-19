@@ -21,6 +21,21 @@ static void run(treenode_t *node, frame_t *dst)
 	}
 }
 
+static void destroy(treenode_t *node)
+{
+	int ix;
+	if (node->op)
+	{
+		if (node->op->init != NULL && node->op->destroy != NULL)
+		{
+			node->op->destroy(node->state);
+			node->state = NULL;
+		}
+		for (ix = 0; ix < node->op->numinputs; ix++)
+			destroy(node->inputs[ix]);
+	}
+}
+
 static void dumpsample(FILE *out, smp_t sample)
 {
 	int16_t isample;
@@ -46,4 +61,5 @@ void play(tree_t *tree, FILE *out, int numsamples, int samprate)
 		dumpsample(out, frame[1]);
 		currenttime += d_time;
 	}
+	destroy(tree->top);
 }
