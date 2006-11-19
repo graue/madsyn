@@ -1,4 +1,4 @@
-void play(tree_t *tree, FILE *out, int numsamples, int samprate);
+void play(tree_t *tree, FILE *out, int numsamples, int samprate, double amp);
 tree_t *readtree(FILE *fp);
 void printtree(tree_t *tree, FILE *fp);
 void destroy(treenode_t *node);

@@ -10,12 +10,14 @@
 #define SAMPRATE 44100
 #define DEF_LEN 5000.0f /* default 5 sec */
 #define DEF_MUTATIONS 3
+#define DEF_AMP 0.2f
 
 #define MS_TO_SAMPLES(l) ((int)((l) * SAMPRATE / 1000.0f))
 
 static void usage(void)
 {
-	fprintf(stderr, "usage: madsyn [-l len_in_ms] [-m num_mutations]\n");
+	fprintf(stderr, "usage: madsyn [-a amp] [-l len_in_ms] "
+		"[-m num_mutations]\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -29,12 +31,15 @@ int main(int argc, char *argv[])
 	int ch, ix;
 	int numsamples = MS_TO_SAMPLES(DEF_LEN);
 	int nummutations = DEF_MUTATIONS;
+	double amp = DEF_AMP;
 
 	SET_BINARY_MODE(1); /* set stdout in binary mode for windows */
 
-	while ((ch = getopt(argc, argv, "l:m:")) != -1)
+	while ((ch = getopt(argc, argv, "a:l:m:")) != -1)
 	{
-		if (ch == 'l') /* length in ms */
+		if (ch == 'a') /* amplification (a ratio) */
+			amp = DEF_AMP * strtod(optarg, NULL);
+		else if (ch == 'l') /* length in ms */
 		{
 			numsamples = MS_TO_SAMPLES(strtod(optarg, NULL));
 			if (numsamples < 0) numsamples = 0;
@@ -50,14 +55,14 @@ int main(int argc, char *argv[])
 
 	tree = readtree(stdin);
 	printtree(tree, stderr);
-	play(tree, stdout, numsamples, SAMPRATE);
+	play(tree, stdout, numsamples, SAMPRATE, amp);
 
 	for (ix = 0; ix < nummutations; ix++)
 	{
 		mutant = copytree(tree);
 		mutate(mutant);
 		printtree(mutant, stderr);
-		play(mutant, stdout, numsamples, SAMPRATE);
+		play(mutant, stdout, numsamples, SAMPRATE, amp);
 		destroytree(mutant);
 	}
 

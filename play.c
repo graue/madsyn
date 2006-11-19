@@ -76,7 +76,7 @@ static void dumpsample(FILE *out, smp_t sample)
 	fwrite(&isample, sizeof isample, 1, out);
 }
 
-void play(tree_t *tree, FILE *out, int numsamples, int samprate)
+void play(tree_t *tree, FILE *out, int numsamples, int samprate, double amp)
 {
 	smp_t d_time = 1.0f / samprate;
 
@@ -85,8 +85,8 @@ void play(tree_t *tree, FILE *out, int numsamples, int samprate)
 	{
 		frame_t frame;
 		run(tree->top, &frame);
-		dumpsample(out, frame[0]);
-		dumpsample(out, frame[1]);
+		dumpsample(out, frame[0]*amp);
+		dumpsample(out, frame[1]*amp);
 		currenttime += d_time;
 	}
 }
