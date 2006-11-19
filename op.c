@@ -44,8 +44,15 @@ static smp_t mydiv(smp_t x, smp_t y)
 	return x / y;
 }
 
+static smp_t mypow(smp_t x, smp_t y)
+{
+	if (x < 0.0f) return pow(x, floor(y));
+	return pow(x, y);
+}
+
 OPER_FUNC2(mod, fmod)
 OPER_FUNC2(div, mydiv)
+OPER_FUNC2(pow, mypow)
 
 static void op_swap(const frame_t *in, frame_t *out, void *state)
 {
@@ -78,4 +85,5 @@ opdef_t ops[] =
 	{ 2, 1, op_mul, NULL, "mul" },
 	{ 2, 1, op_mod, NULL, "mod" },
 	{ 2, 1, op_div, NULL, "div" },
+	{ 2, 1, op_pow, NULL, "pow" },
 };
