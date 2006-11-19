@@ -205,6 +205,37 @@ void mut_addop(treenode_t *node)
 	addspot->depth++;
 }
 
+void mut_randomizevalues(treenode_t *node)
+{
+	treenode_t *randspot;
+	int tries = PERSISTENCE;
+	int ix;
+
+	if (node->depth == 0)
+		randspot = node;
+	else do
+	{
+		randspot = randomnode(node, rnd(node->depth));
+	} while (tries-- > 0 && randspot->op == NULL && randspot->istime);
+
+	if (randspot->op)
+	{
+		for (ix = 0; ix < randspot->op->numinputs; ix++)
+			mut_randomizevalues(randspot->inputs[ix]);
+	}
+	else if (randspot->istime)
+	{
+		randspot->istime = 0;
+		randspot->constant = randomconstant();
+	}
+	else
+	{
+		/* Tweak the value by up to 20% either way. */
+		randspot->constant += randspot->constant
+			* (-0.2f + frnd()*0.4f);
+	}
+}
+
 /* END MUTATIONS (although they are listed again below */
 
 typedef void (*mutatefunc)(treenode_t *node);
@@ -213,7 +244,8 @@ mutatefunc mutations[] =
 	mut_swapsubtrees,
 	mut_deletesubtree,
 	mut_copysubtree,
-	mut_addop
+	mut_addop,
+	mut_randomizevalues
 };
 #define NUMMUTATIONS (sizeof mutations / sizeof mutations[0])
 
