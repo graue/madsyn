@@ -5,12 +5,15 @@
 #include "defs.h"
 #include "op.h"
 
-static void op_sin(const frame_t *in, frame_t *out, void *state)
-{
-	(void)state;
-	out[0][0] = sin(in[0][0]);
-	out[0][1] = sin(in[0][1]);
+#define SIMPLE_FUNC(name)						\
+static void op_ ## name (const frame_t *in, frame_t *out, void *state)	\
+{									\
+	(void)state;							\
+	out[0][0] = name(in[0][0]);					\
+	out[0][1] = name(in[0][1]);					\
 }
+
+SIMPLE_FUNC(sin)
 
 /*typedef struct
 {
@@ -23,6 +26,5 @@ static void op_sin(const frame_t *in, frame_t *out, void *state)
 
 opdef_t ops[] =
 {
-	/* sine */
 	{ 1, op_sin, NULL, "sin" }
 };
