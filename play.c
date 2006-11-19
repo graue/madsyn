@@ -28,7 +28,7 @@ static void run(treenode_t *node, frame_t *dst)
 void destroy(treenode_t *node)
 {
 	int ix;
-	if (node->op)
+	if (node->op != NULL)
 	{
 		if (node->op->init != NULL && node->op->destroy != NULL)
 		{
