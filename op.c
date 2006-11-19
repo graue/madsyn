@@ -62,7 +62,7 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
-opdef_t ops[] =
+static const opdef_t ops_array[] =
 {
 	{ 1, op_sin, NULL, NULL, "sin" },
 	{ 1, op_cos, NULL, NULL, "cos" },
@@ -75,4 +75,7 @@ opdef_t ops[] =
 	{ 2, op_mod, NULL, NULL, "%" },
 	{ 2, op_div, NULL, NULL, "/" },
 	{ 2, op_pow, NULL, NULL, "^" },
+	{ 0, NULL, NULL, NULL, NULL }
 };
+
+const opdef_t *ops = ops_array;

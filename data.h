@@ -16,7 +16,7 @@ typedef struct
 
 typedef struct treenode
 {
-	opdef_t *op; /* if NULL then a terminal */
+	const opdef_t *op; /* if NULL then a terminal */
 	int istime; /* if op == NULL, use time value here */
 	smp_t constant; /* if op == NULL && !istime, constant value */
 	struct treenode *inputs[MAXINPUTS]; /* if op != NULL */
@@ -27,3 +27,5 @@ typedef struct
 {
 	treenode_t *top;
 } tree_t;
+
+const opdef_t *ops; /* op.c */
