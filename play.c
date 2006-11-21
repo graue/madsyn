@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "types.h"
 #include "data.h"
 
@@ -64,22 +65,36 @@ void destroytree(tree_t *tree)
 
 #define RANGE 32767.0f
 
+static int dumpfloats = 0;
+
 static void dumpsample(FILE *out, smp_t sample)
 {
 	int16_t isample;
+	float fsample;
 
 	sample *= RANGE;
-	if (sample < -RANGE) sample = -RANGE;
-	else if (sample > RANGE) sample = RANGE;
-	isample = (int16_t)sample;
-	isample = htole16(isample);
-	fwrite(&isample, sizeof isample, 1, out);
+	if (dumpfloats)
+	{
+		fsample = (float)sample;
+		if (isnanf(fsample) || isinff(fsample)) fsample = 0.0f;
+		fwrite(&fsample, sizeof fsample, 1, out);
+	}
+	else /* clip and write little-endian 16-bit PCM */
+	{
+		if (sample < -RANGE) sample = -RANGE;
+		else if (sample > RANGE) sample = RANGE;
+		isample = (int16_t)sample;
+		isample = htole16(isample);
+		fwrite(&isample, sizeof isample, 1, out);
+	}
 }
 
-void play(tree_t *tree, FILE *out, int numsamples, int samprate, double amp)
+void play(tree_t *tree, FILE *out, int numsamples, int samprate, double amp,
+	int usefloats)
 {
 	smp_t d_time = 1.0f / samprate;
 
+	dumpfloats = usefloats;
 	currenttime = 0.0f;
 	while (numsamples-- > 0)
 	{

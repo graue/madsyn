@@ -16,7 +16,7 @@
 
 static void usage(void)
 {
-	fprintf(stderr, "usage: madsyn [-a amp] [-l len_in_ms] "
+	fprintf(stderr, "usage: madsyn [-f] [-a amp] [-l len_in_ms] "
 		"[-m num_mutations]\n");
 	exit(EXIT_FAILURE);
 }
@@ -31,14 +31,17 @@ int main(int argc, char *argv[])
 	int ch, ix;
 	int numsamples = MS_TO_SAMPLES(DEF_LEN);
 	int nummutations = DEF_MUTATIONS;
+	int usefloats = 0;
 	double amp = DEF_AMP;
 
 	SET_BINARY_MODE(1); /* set stdout in binary mode for windows */
 
-	while ((ch = getopt(argc, argv, "a:l:m:")) != -1)
+	while ((ch = getopt(argc, argv, "a:fl:m:")) != -1)
 	{
 		if (ch == 'a') /* amplification (a ratio) */
 			amp = DEF_AMP * strtod(optarg, NULL);
+		else if (ch == 'f') /* output unclipped float samples */
+			usefloats = 1;
 		else if (ch == 'l') /* length in ms */
 		{
 			numsamples = MS_TO_SAMPLES(strtod(optarg, NULL));
@@ -55,14 +58,14 @@ int main(int argc, char *argv[])
 
 	tree = readtree(stdin);
 	printtree(tree, stderr);
-	play(tree, stdout, numsamples, SAMPRATE, amp);
+	play(tree, stdout, numsamples, SAMPRATE, amp, usefloats);
 
 	for (ix = 0; ix < nummutations; ix++)
 	{
 		mutant = copytree(tree);
 		mutate(mutant);
 		printtree(mutant, stderr);
-		play(mutant, stdout, numsamples, SAMPRATE, amp);
+		play(mutant, stdout, numsamples, SAMPRATE, amp, usefloats);
 		destroytree(mutant);
 	}
 
