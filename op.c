@@ -12,9 +12,15 @@ static void op_ ## name (const frame_t *in, frame_t *out, void *state)	\
 	out[0][1] = name(in[0][1]);					\
 }
 
+static double mylog(double x)
+{
+	if (x < 0.0f) return -log(-x);
+	return log(x);
+}
+
 SIMPLE_FUNC(sin)
 SIMPLE_FUNC(cos)
-SIMPLE_FUNC(log)
+SIMPLE_FUNC(mylog)
 SIMPLE_FUNC(fabs)
 
 #define OPER_FUNC(name, oper)						\
@@ -66,7 +72,7 @@ static const opdef_t ops_array[] =
 {
 	{ 1, op_sin, NULL, NULL, "sin" },
 	{ 1, op_cos, NULL, NULL, "cos" },
-	{ 1, op_log, NULL, NULL, "log" },
+	{ 1, op_mylog, NULL, NULL, "log" },
 	{ 1, op_fabs, NULL, NULL, "abs" },
 	{ 2, op_pan, NULL, NULL, "pan" },
 	{ 2, op_add, NULL, NULL, "+" },
