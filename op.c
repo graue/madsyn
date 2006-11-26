@@ -1,7 +1,7 @@
 /* Defining operators. */
 
 #include <stddef.h>
-#include <math.h>
+#include "math.h"
 #include "data.h"
 
 #define SIMPLE_FUNC(name)						\
