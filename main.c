@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 	}
 	if (argc - optind > 0) usage();
 
-	if (isatty(STDOUT_FILENO))
+	if (numsamples > 0 && isatty(STDOUT_FILENO))
 		errx(1, "I won't write junk onto your terminal.");
 
 	tree = readtree(stdin);
