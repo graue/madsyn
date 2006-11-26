@@ -75,6 +75,14 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
+/* An init function for anything needing two samples of state. */
+static void *init2smps(void)
+{
+	smp_t *smps = xm(sizeof *smps, 2);
+	smps[0] = smps[1] = 0.0f;
+	return smps;
+}
+
 #ifdef BAD_OPS
 /*
  * statesin keeps its phases as a state and takes new frequencies
@@ -89,13 +97,25 @@ static void op_statesin(const frame_t *in, frame_t *out, void *state)
 	phases[0] += (in[0][0] * 2*M_PI / SAMPRATE);
 	phases[1] += (in[0][1] * 2*M_PI / SAMPRATE);
 }
-static void *op_statesin_init(void)
-{
-	smp_t *phases = xm(sizeof *phases, 2);
-	phases[0] = phases[1] = 0.0f;
-	return phases;
-}
 #endif
+
+static void op_deriv(const frame_t *in, frame_t *out, void *state)
+{
+	smp_t *last = state;
+	out[0][0] = in[0][0] - 0.5*last[0];
+	out[0][1] = in[0][1] - 0.5*last[1];
+	last[0] = in[0][0];
+	last[1] = in[0][1];
+}
+
+static void op_int(const frame_t *in, frame_t *out, void *state)
+{
+	smp_t *last = state;
+	out[0][0] = in[0][0] + 0.5*last[0];
+	out[0][1] = in[0][1] + 0.5*last[1];
+	last[0] = in[0][0];
+	last[1] = in[0][1];
+}
 
 static const opdef_t ops_array[] =
 {
@@ -112,8 +132,10 @@ static const opdef_t ops_array[] =
 	{ 2, op_pow, NULL, NULL, "^" },
 	{ 2, op_min, NULL, NULL, "min" },
 #ifdef BAD_OPS
-	{ 1, op_statesin, op_statesin_init, free, "sin_" },
+	{ 1, op_statesin, init2smps, free, "sin_" },
 #endif
+	{ 1, op_deriv, init2smps, free, "deriv" },
+	{ 1, op_int, init2smps, free, "int" },
 	{ 0, NULL, NULL, NULL, NULL }
 };
 
