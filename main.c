@@ -7,7 +7,6 @@
 #include "data.h"
 #include "protos.h"
 
-#define SAMPRATE 44100
 #define DEF_LEN 5000.0f /* default 5 sec */
 #define DEF_MUTATIONS 3
 #define DEF_AMP 0.2f
