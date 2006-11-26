@@ -51,7 +51,7 @@ static smp_t mydiv(smp_t x, smp_t y)
 
 static smp_t mypow(smp_t x, smp_t y)
 {
-	if (x < 0.0f) return pow(x, floor(y));
+	if (x < 0.0f) return -pow(-x, y);
 	return pow(x, y);
 }
 
