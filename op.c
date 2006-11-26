@@ -75,6 +75,7 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
+#ifdef BAD_OPS
 /*
  * statesin keeps its phases as a state and takes new frequencies
  * (Hz) as input. (No inertia for the frequency.)
@@ -94,6 +95,7 @@ static void *op_statesin_init(void)
 	phases[0] = phases[1] = 0.0f;
 	return phases;
 }
+#endif
 
 static const opdef_t ops_array[] =
 {
@@ -109,7 +111,9 @@ static const opdef_t ops_array[] =
 	{ 2, op_div, NULL, NULL, "/" },
 	{ 2, op_pow, NULL, NULL, "^" },
 	{ 2, op_min, NULL, NULL, "min" },
+#ifdef BAD_OPS
 	{ 1, op_statesin, op_statesin_init, free, "sin_" },
+#endif
 	{ 0, NULL, NULL, NULL, NULL }
 };
 
