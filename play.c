@@ -23,6 +23,7 @@ static void run(treenode_t *node, frame_t *dst)
 		for (ix = 0; ix < node->op->numinputs; ix++)
 			run(node->inputs[ix], &inputs[ix]);
 		node->op->run((const frame_t *)&inputs[0], dst, node->state);
+			/* XXX weird MinGW gcc warning on above line */
 	}
 }
 
