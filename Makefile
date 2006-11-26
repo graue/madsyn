@@ -15,7 +15,7 @@ $(EXENAME): $(OBJS)
 xm.o: xm.c err.h
 err.o: err.c
 random.o: random.c
-op.o: op.c data.h math.h
+op.o: op.c data.h math.h xm.h
 play.o: play.c types.h data.h math.h
 treeio.o: treeio.c data.h xm.h err.h
 mutate.o: mutate.c data.h xm.h protos.h

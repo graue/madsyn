@@ -1,8 +1,9 @@
 /* Defining operators. */
 
-#include <stddef.h>
+#include <stdlib.h>
 #include "math.h"
 #include "data.h"
+#include "xm.h"
 
 #define SIMPLE_FUNC(name)						\
 static void op_ ## name (const frame_t *in, frame_t *out, void *state)	\
@@ -74,6 +75,26 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 	out[0][1] = in[0][1] * cos(angle) + sin(angle);
 }
 
+/*
+ * statesin keeps its phases as a state and takes new frequencies
+ * (Hz) as input. (No inertia for the frequency.)
+ */
+static void op_statesin(const frame_t *in, frame_t *out, void *state)
+{
+	smp_t *phases = state;
+
+	out[0][0] = sin(phases[0]);
+	out[0][1] = sin(phases[1]);
+	phases[0] += (in[0][0] * 2*M_PI / SAMPRATE);
+	phases[1] += (in[0][1] * 2*M_PI / SAMPRATE);
+}
+static void *op_statesin_init(void)
+{
+	smp_t *phases = xm(sizeof *phases, 2);
+	phases[0] = phases[1] = 0.0f;
+	return phases;
+}
+
 static const opdef_t ops_array[] =
 {
 	{ 1, op_sin, NULL, NULL, "sin" },
@@ -88,6 +109,7 @@ static const opdef_t ops_array[] =
 	{ 2, op_div, NULL, NULL, "/" },
 	{ 2, op_pow, NULL, NULL, "^" },
 	{ 2, op_min, NULL, NULL, "min" },
+	{ 1, op_statesin, op_statesin_init, free, "sin_" },
 	{ 0, NULL, NULL, NULL, NULL }
 };
 
