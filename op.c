@@ -55,9 +55,15 @@ static smp_t mypow(smp_t x, smp_t y)
 	return pow(x, y);
 }
 
+static smp_t min(smp_t x, smp_t y)
+{
+	return x < y ? x : y;
+}
+
 OPER_FUNC2(mod, fmod)
 OPER_FUNC2(div, mydiv)
 OPER_FUNC2(pow, mypow)
+OPER_FUNC2(min, min)
 
 static void op_pan(const frame_t *in, frame_t *out, void *state)
 {
@@ -81,6 +87,7 @@ static const opdef_t ops_array[] =
 	{ 2, op_mod, NULL, NULL, "%" },
 	{ 2, op_div, NULL, NULL, "/" },
 	{ 2, op_pow, NULL, NULL, "^" },
+	{ 2, op_min, NULL, NULL, "min" },
 	{ 0, NULL, NULL, NULL, NULL }
 };
 
