@@ -1,10 +1,10 @@
 #include <sys/types.h>
 
 #ifdef __WIN32
-typedef unsigned short u_int16_t;
-typedef unsigned long u_int32_t;
-typedef short int16_t;
-/* MinGW knows about int32_t but _not_ those above three, apparently. */
+#include <stdint.h>
+typedef uint16_t u_int16_t;
+typedef uint32_t u_int32_t;
+/* stdint.h already defines int16_t and int32_t. */
 #endif
 
 /*
