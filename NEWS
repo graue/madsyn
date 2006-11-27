@@ -1,3 +1,7 @@
+0.0007, November 26, 2006 @ 19:45
+ * Add this NEWS file.
+ * Try to fix MinGW types problem using stdint.h.
+
 0.0006, November 26, 2006 @ 19:29
  * Make log function work on negative inputs by returning -log(-x).
  * Add operator "min": returns minimum of input values.
