@@ -1,0 +1,28 @@
+0.0006, November 26, 2006 @ 19:29
+ * Make log function work on negative inputs by returning -log(-x).
+ * Add operator "min": returns minimum of input values.
+ * Add stateful operators "deriv" and "int".
+ * For negative x, make pow(x,y) return -pow(-x,y).
+ * If the length of sound to generate is 0, allow stdout to be a tty.
+ * Add a README file.
+ * Add sample/test formulas.
+ * Define htole and letoh macros for Linux, which lacks them.
+ * Supply isinff() where missing, e.g. on Windows.
+ * Remove -Werror from the Makefile (fixes Windows compile).
+
+0.0005, November 21, 2006
+ * Add -f option to output floats.
+
+0.0004, November 19, 2006 @ 16:39
+ * Add amplitude option -a and lower default amplitude.
+ * Windows fix.
+
+0.0003, November 19, 2006 @ 16:20
+ * Fix a crash bug, without understanding why.
+ * Windows fixes.
+
+0.0002, November 19, 2006 @ 14:47
+ * Add a mutation that randomly changes operators.
+
+0.0001, November 19, 2006 @ 14:24
+ * First version.
