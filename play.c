@@ -64,8 +64,6 @@ void destroytree(tree_t *tree)
 	free(tree);
 }
 
-#define RANGE 32767.0f
-
 static int dumpfloats = 0;
 
 static void dumpsample(FILE *out, smp_t sample)
@@ -73,7 +71,6 @@ static void dumpsample(FILE *out, smp_t sample)
 	int16_t isample;
 	float fsample;
 
-	sample *= RANGE;
 	if (dumpfloats)
 	{
 		fsample = (float)sample;
@@ -82,8 +79,9 @@ static void dumpsample(FILE *out, smp_t sample)
 	}
 	else /* clip and write little-endian 16-bit PCM */
 	{
-		if (sample < -RANGE) sample = -RANGE;
-		else if (sample > RANGE) sample = RANGE;
+		if (sample < -1.0) sample = -1.0;
+		else if (sample > 1.0) sample = 1.0;
+		sample *= 32767.0;
 		isample = (int16_t)sample;
 		isample = htole16(isample);
 		fwrite(&isample, sizeof isample, 1, out);
