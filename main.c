@@ -7,11 +7,11 @@
 #include "data.h"
 #include "protos.h"
 
-#define DEF_LEN 5000.0f /* default 5 sec */
+#define DEF_LEN 5000.0 /* default 5 sec */
 #define DEF_MUTATIONS 3
 #define DEF_AMP 0.2f
 
-#define MS_TO_SAMPLES(l) ((int)((l) * SAMPRATE / 1000.0f))
+#define MS_TO_SAMPLES(l) ((int)((l) * SAMPRATE / 1000.0))
 
 static void usage(void)
 {

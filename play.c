@@ -74,7 +74,7 @@ static void dumpsample(FILE *out, smp_t sample)
 	if (dumpfloats)
 	{
 		fsample = (float)sample;
-		if (isnanf(fsample) || isinff(fsample)) fsample = 0.0f;
+		if (isnanf(fsample) || isinff(fsample)) fsample = 0.0;
 		fwrite(&fsample, sizeof fsample, 1, out);
 	}
 	else /* clip and write little-endian 16-bit PCM */
@@ -91,10 +91,10 @@ static void dumpsample(FILE *out, smp_t sample)
 void play(tree_t *tree, FILE *out, int numsamples, int samprate, double amp,
 	int usefloats)
 {
-	smp_t d_time = 1.0f / samprate;
+	smp_t d_time = 1.0 / samprate;
 
 	dumpfloats = usefloats;
-	currenttime = 0.0f;
+	currenttime = 0.0;
 	while (numsamples-- > 0)
 	{
 		frame_t frame;

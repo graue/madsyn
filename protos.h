@@ -10,4 +10,4 @@ void mutate(tree_t *tree);
 
 /* random numbers */
 int rnd(int n);
-double frnd(void); /* from 0.0f to 1.0f */
+double frnd(void); /* from 0.0 to 1.0 */

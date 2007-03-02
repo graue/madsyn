@@ -71,5 +71,5 @@ int rnd(int n)
 double frnd(void)
 {
 	check_init();
-	return (ya_random() & 0xffffff) / 16777215.0f;
+	return (ya_random() & 0xffffff) / 16777215.0;
 }

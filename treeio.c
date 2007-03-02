@@ -43,7 +43,7 @@ tree_t *readtree(FILE *fp)
 		top->state = NULL;
 		top->op = NULL;
 		top->istime = 0;
-		top->constant = 0.0f;
+		top->constant = 0.0;
 		top->depth = 0;
 		top->parent = NULL;
 

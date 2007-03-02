@@ -15,7 +15,7 @@ static void op_ ## name (const frame_t *in, frame_t *out, void *state)	\
 
 static double mylog(double x)
 {
-	if (x < 0.0f) return -log(-x);
+	if (x < 0.0) return -log(-x);
 	return log(x);
 }
 
@@ -46,13 +46,13 @@ static void op_ ## name (const frame_t *in, frame_t *out, void *state)	\
 
 static smp_t mydiv(smp_t x, smp_t y)
 {
-	if (y == 0.0f) return 0.0f;
+	if (y == 0.0) return 0.0;
 	return x / y;
 }
 
 static smp_t mypow(smp_t x, smp_t y)
 {
-	if (x < 0.0f) return -pow(-x, y);
+	if (x < 0.0) return -pow(-x, y);
 	return pow(x, y);
 }
 
@@ -79,7 +79,7 @@ static void op_pan(const frame_t *in, frame_t *out, void *state)
 static void *init2smps(void)
 {
 	smp_t *smps = xm(sizeof *smps, 2);
-	smps[0] = smps[1] = 0.0f;
+	smps[0] = smps[1] = 0.0;
 	return smps;
 }
 
