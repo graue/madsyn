@@ -41,7 +41,7 @@ static size_t sizmul(size_t size, size_t nmemb)
 
 static void nomem(size_t size, size_t nmemb)
 {
-	err(1, "cannot allocate %lu objects of size %lu"
+	err(1, "cannot allocate %lu objects of size %lu "
 		"(total %lu bytes)", (unsigned long)nmemb,
 		(unsigned long)size, (unsigned long)(nmemb*size));
 }
