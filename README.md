@@ -19,7 +19,7 @@ a sound-playing program like this:
 You can also redirect the output into a raw file to open
 in an audio editor:
 
-    madsyn &lt;formula &gt;output.raw
+    madsyn <formula >output.raw
 
 The full set of options is: `madsyn [-f] [-a amp]
 [-l len_in_ms] [-m num_mutations]`
