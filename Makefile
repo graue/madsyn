@@ -10,7 +10,7 @@ OBJS = main.o mutate.o treeio.o play.o op.o random.o xm.o err.o math.o
 all: $(EXENAME)
 
 $(EXENAME): $(OBJS)
-	$(CC) -o $(EXENAME) $(LDFLAGS) $(OBJS)
+	$(CC) -o $(EXENAME) $(OBJS) $(LDFLAGS)
 
 xm.o: xm.c err.h
 err.o: err.c
